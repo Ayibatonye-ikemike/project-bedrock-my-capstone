@@ -1,0 +1,52 @@
+# Custom values for the upstream retail-store-sample-app Helm chart.
+#
+# Goal: disable the in-cluster MySQL/PostgreSQL/DynamoDB and point each service
+# at the managed AWS data layer provisioned by Terraform. Keep RabbitMQ/Redis
+# in-cluster (chart default).
+#
+# Secrets are NOT stored here. Create Kubernetes secrets from AWS Secrets
+# Manager first (see k8s/README.md) and reference them by name below.
+
+# ---- catalog -> Amazon RDS (MySQL) -----------------------------------------
+catalog:
+  persistence:
+    # turn off the bundled in-cluster mysql
+    enabled: false
+  database:
+    create: false
+    # endpoint + name come from terraform output (data module)
+    # host: <project-bedrock-mysql endpoint>
+    # name: catalog
+  extraEnvVarsSecret: catalog-db   # k8s secret synced from Secrets Manager
+
+# ---- orders -> Amazon RDS (PostgreSQL) -------------------------------------
+orders:
+  persistence:
+    enabled: false
+  database:
+    create: false
+    # host: <project-bedrock-postgres endpoint>
+    # name: orders
+  extraEnvVarsSecret: orders-db
+
+# ---- carts -> Amazon DynamoDB ----------------------------------------------
+carts:
+  persistence:
+    # disable in-cluster dynamodb-local; use the real table
+    enabled: false
+  dynamodb:
+    create: false
+    # tableName: project-bedrock-carts
+
+# ---- in-cluster services (kept as chart defaults) --------------------------
+checkout:
+  persistence:
+    enabled: true   # redis in-cluster
+orders:
+  messaging:
+    enabled: true   # rabbitmq in-cluster
+
+# ---- ui --------------------------------------------------------------------
+ui:
+  service:
+    type: ClusterIP   # exposed via the ALB Ingress instead of a LoadBalancer

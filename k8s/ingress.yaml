@@ -1,0 +1,28 @@
+# Ingress exposing the retail-store "ui" service via an internet-facing ALB.
+# The AWS Load Balancer Controller (installed by Terraform) reconciles this.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: retail-ui
+  namespace: retail-app
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+    # For TLS (bonus), add an ACM cert ARN and an HTTPS listener:
+    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:ACCOUNT:certificate/ID
+    # alb.ingress.kubernetes.io/ssl-redirect: '443'
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ui
+                port:
+                  number: 80

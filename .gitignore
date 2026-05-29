@@ -1,0 +1,33 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars.secret
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+.terraform.lock.hcl.bak
+
+# Lambda build artifacts
+lambda/**/*.zip
+# Terraform-built Lambda package
+**/asset_processor.zip
+lambda/**/package/
+
+# Local env / secrets
+.env
+*.pem
+*.key
+kubeconfig*
+bedrock-dev-view-credentials*.csv
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
