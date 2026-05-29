@@ -9,11 +9,11 @@ metadata:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/healthcheck-path: /
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
-    # For TLS (bonus), add an ACM cert ARN and an HTTPS listener:
-    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
-    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:ACCOUNT:certificate/ID
-    # alb.ingress.kubernetes.io/ssl-redirect: '443'
+    # TLS terminated at the ALB via an ACM-managed certificate (bonus 5.2).
+    # HTTP:80 is kept only to issue a 443 redirect; all traffic upgrades to HTTPS.
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:663958378887:certificate/163eea77-78ca-4cdd-901d-41a4d66e5607
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
 spec:
   ingressClassName: alb
   rules:
