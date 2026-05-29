@@ -81,3 +81,9 @@ variable "db_instance_class" {
   type        = string
   default     = "db.t3.micro"
 }
+
+variable "cluster_admin_principal_arns" {
+  description = "IAM principal ARNs (e.g. the bootstrap IAM user) granted EKS cluster-admin via access entries, in addition to the CI role."
+  type        = list(string)
+  default     = []
+}

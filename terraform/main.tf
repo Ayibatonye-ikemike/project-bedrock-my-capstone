@@ -22,15 +22,16 @@ module "vpc" {
 module "eks" {
   source = "./modules/eks"
 
-  cluster_name        = var.cluster_name
-  cluster_version     = var.cluster_version
-  vpc_id              = module.vpc.vpc_id
-  private_subnet_ids  = module.vpc.private_subnet_ids
-  node_instance_types = var.node_instance_types
-  node_desired_size   = var.node_desired_size
-  node_min_size       = var.node_min_size
-  node_max_size       = var.node_max_size
-  ci_role_arn         = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/project-bedrock-github-actions"
+  cluster_name         = var.cluster_name
+  cluster_version      = var.cluster_version
+  vpc_id               = module.vpc.vpc_id
+  private_subnet_ids   = module.vpc.private_subnet_ids
+  node_instance_types  = var.node_instance_types
+  node_desired_size    = var.node_desired_size
+  node_min_size        = var.node_min_size
+  node_max_size        = var.node_max_size
+  ci_role_arn          = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/project-bedrock-github-actions"
+  admin_principal_arns = var.cluster_admin_principal_arns
 }
 
 module "data" {

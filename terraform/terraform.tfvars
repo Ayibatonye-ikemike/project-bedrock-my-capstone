@@ -14,4 +14,7 @@ node_desired_size   = 2
 node_min_size       = 1
 node_max_size       = 3
 
+# IAM principals granted EKS cluster-admin (in addition to the CI role).
+cluster_admin_principal_arns = ["arn:aws:iam::663958378887:user/capstone-project-IAM"]
+
 db_instance_class = "db.t3.micro"

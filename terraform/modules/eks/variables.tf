@@ -43,3 +43,9 @@ variable "ci_role_arn" {
   type        = string
   default     = ""
 }
+
+variable "admin_principal_arns" {
+  description = "Additional IAM principal ARNs (e.g. the bootstrap IAM user) to grant cluster-admin via EKS access entries."
+  type        = list(string)
+  default     = []
+}

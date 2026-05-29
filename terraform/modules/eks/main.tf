@@ -21,8 +21,10 @@ module "eks" {
 
   cluster_endpoint_public_access = true
 
-  # The identity running terraform becomes a cluster admin.
-  enable_cluster_creator_admin_permissions = true
+  # Cluster admins are declared explicitly (below) so access is deterministic
+  # regardless of which principal runs `terraform apply` (local vs CI). The
+  # caller-based "creator" entry is disabled to avoid drift between runners.
+  enable_cluster_creator_admin_permissions = false
 
   # Control-plane logging -> CloudWatch (graded).
   cluster_enabled_log_types = [
@@ -55,19 +57,33 @@ module "eks" {
   # add access entries.
   authentication_mode = "API_AND_CONFIG_MAP"
 
-  # Grant the CI/CD role cluster-admin so GitHub Actions can manage the
-  # Helm/Kubernetes resources in this stack during `terraform apply`.
-  access_entries = var.ci_role_arn == "" ? {} : {
-    ci = {
-      principal_arn = var.ci_role_arn
-      policy_associations = {
-        admin = {
-          policy_arn   = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-          access_scope = { type = "cluster" }
+  # Explicit cluster-admin access entries: the CI/CD role (so GitHub Actions can
+  # manage Helm/Kubernetes resources during apply) plus any bootstrap admin
+  # principals (e.g. the IAM user used for local applies).
+  access_entries = merge(
+    var.ci_role_arn == "" ? {} : {
+      ci = {
+        principal_arn = var.ci_role_arn
+        policy_associations = {
+          admin = {
+            policy_arn   = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+            access_scope = { type = "cluster" }
+          }
+        }
+      }
+    },
+    {
+      for idx, arn in var.admin_principal_arns : "admin_${idx}" => {
+        principal_arn = arn
+        policy_associations = {
+          admin = {
+            policy_arn   = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+            access_scope = { type = "cluster" }
+          }
         }
       }
     }
-  }
+  )
 }
 
 ###############################################################################
