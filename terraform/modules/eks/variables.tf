@@ -37,3 +37,9 @@ variable "node_max_size" {
   description = "Maximum node count."
   type        = number
 }
+
+variable "ci_role_arn" {
+  description = "IAM role ARN (GitHub Actions OIDC) to grant cluster-admin access via an EKS access entry. Empty disables it."
+  type        = string
+  default     = ""
+}

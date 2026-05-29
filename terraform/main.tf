@@ -30,6 +30,7 @@ module "eks" {
   node_desired_size   = var.node_desired_size
   node_min_size       = var.node_min_size
   node_max_size       = var.node_max_size
+  ci_role_arn         = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/project-bedrock-github-actions"
 }
 
 module "data" {

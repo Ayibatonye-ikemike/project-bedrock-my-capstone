@@ -54,6 +54,20 @@ module "eks" {
   # Allow this account to use API + ConfigMap auth so the developer module can
   # add access entries.
   authentication_mode = "API_AND_CONFIG_MAP"
+
+  # Grant the CI/CD role cluster-admin so GitHub Actions can manage the
+  # Helm/Kubernetes resources in this stack during `terraform apply`.
+  access_entries = var.ci_role_arn == "" ? {} : {
+    ci = {
+      principal_arn = var.ci_role_arn
+      policy_associations = {
+        admin = {
+          policy_arn   = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = { type = "cluster" }
+        }
+      }
+    }
+  }
 }
 
 ###############################################################################
