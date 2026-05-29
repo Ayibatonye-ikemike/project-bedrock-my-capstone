@@ -1,52 +1,63 @@
-# Custom values for the upstream retail-store-sample-app Helm chart.
+# Per-component values for the retail-store-sample-app Helm charts.
 #
-# Goal: disable the in-cluster MySQL/PostgreSQL/DynamoDB and point each service
-# at the managed AWS data layer provisioned by Terraform. Keep RabbitMQ/Redis
-# in-cluster (chart default).
-#
-# Secrets are NOT stored here. Create Kubernetes secrets from AWS Secrets
-# Manager first (see k8s/README.md) and reference them by name below.
+# The upstream project publishes one chart per microservice. Each block below is
+# the values file passed to the corresponding `helm upgrade --install` (see
+# k8s/README.md). Secrets are NOT stored here — replace the <PLACEHOLDER> host
+# and password values locally (e.g. in /tmp) before deploying; do not commit
+# real credentials. Each chart creates its own Kubernetes secret.
 
-# ---- catalog -> Amazon RDS (MySQL) -----------------------------------------
+# ---- catalog-values.yaml  (retail-store-sample-catalog-chart) --------------
+# catalog -> Amazon RDS (MySQL)
 catalog:
-  persistence:
-    # turn off the bundled in-cluster mysql
-    enabled: false
-  database:
-    create: false
-    # endpoint + name come from terraform output (data module)
-    # host: <project-bedrock-mysql endpoint>
-    # name: catalog
-  extraEnvVarsSecret: catalog-db   # k8s secret synced from Secrets Manager
+  mysql:
+    create: false            # disable the bundled in-cluster MySQL
+  app:
+    persistence:
+      provider: mysql
+      endpoint: "<MYSQL_HOST>:3306"   # project-bedrock-mysql RDS endpoint
+      database: catalog
+      secret:
+        create: true
+        name: catalog-db
+        username: catalog_user
+        password: "<MYSQL_PASSWORD>"
 
-# ---- orders -> Amazon RDS (PostgreSQL) -------------------------------------
+# ---- orders-values.yaml  (retail-store-sample-orders-chart) ----------------
+# orders -> Amazon RDS (PostgreSQL); messaging kept in-memory (no RabbitMQ)
 orders:
-  persistence:
-    enabled: false
-  database:
+  postgresql:
     create: false
-    # host: <project-bedrock-postgres endpoint>
-    # name: orders
-  extraEnvVarsSecret: orders-db
+  rabbitmq:
+    create: false
+  app:
+    persistence:
+      provider: postgres
+      endpoint: "<POSTGRES_HOST>:5432" # project-bedrock-postgres RDS endpoint
+      database: orders
+      secret:
+        create: true
+        name: orders-db
+        username: orders_user
+        password: "<POSTGRES_PASSWORD>"
+    messaging:
+      provider: in-memory
 
-# ---- carts -> Amazon DynamoDB ----------------------------------------------
+# ---- carts-values.yaml  (retail-store-sample-cart-chart) -------------------
+# carts -> Amazon DynamoDB (table + GSI idx_global_customerId from data module)
 carts:
-  persistence:
-    # disable in-cluster dynamodb-local; use the real table
-    enabled: false
   dynamodb:
-    create: false
-    # tableName: project-bedrock-carts
+    create: false            # use the real table, not dynamodb-local
+  app:
+    persistence:
+      provider: dynamodb
+      dynamodb:
+        tableName: project-bedrock-carts
+        createTable: false
 
-# ---- in-cluster services (kept as chart defaults) --------------------------
-checkout:
-  persistence:
-    enabled: true   # redis in-cluster
-orders:
-  messaging:
-    enabled: true   # rabbitmq in-cluster
+# ---- checkout  (retail-store-sample-checkout-chart) ------------------------
+# checkout -> in-cluster redis (chart default, no overrides needed)
 
-# ---- ui --------------------------------------------------------------------
+# ---- ui-values.yaml  (retail-store-sample-ui-chart) ------------------------
 ui:
   service:
-    type: ClusterIP   # exposed via the ALB Ingress instead of a LoadBalancer
+    type: ClusterIP          # exposed via the ALB Ingress, not a LoadBalancer

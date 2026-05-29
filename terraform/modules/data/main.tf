@@ -144,6 +144,18 @@ resource "aws_dynamodb_table" "carts" {
     type = "S"
   }
 
+  # Required by the retail-store cart service to look up carts by customer.
+  attribute {
+    name = "customerId"
+    type = "S"
+  }
+
+  global_secondary_index {
+    name            = "idx_global_customerId"
+    hash_key        = "customerId"
+    projection_type = "ALL"
+  }
+
   tags = { Name = "${var.project_name}-carts" }
 }
 
