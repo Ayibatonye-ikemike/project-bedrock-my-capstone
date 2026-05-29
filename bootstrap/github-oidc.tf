@@ -8,9 +8,9 @@
 ###############################################################################
 
 variable "github_owner" {
-  description = "GitHub org/user that owns the repo."
+  description = "GitHub org/user that owns the repo (must match the login casing used in the OIDC 'sub' claim)."
   type        = string
-  default     = "ayibatonye-ikemike"
+  default     = "Ayibatonye-ikemike"
 }
 
 variable "github_repo" {
@@ -46,7 +46,13 @@ data "aws_iam_policy_document" "github_assume" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:${var.github_owner}/${var.github_repo}:*"]
+      # Accept the configured owner casing as well as a lower-cased variant,
+      # since the OIDC 'sub' claim casing must match exactly (StringLike is
+      # case-sensitive).
+      values = [
+        "repo:${var.github_owner}/${var.github_repo}:*",
+        "repo:${lower(var.github_owner)}/${var.github_repo}:*",
+      ]
     }
   }
 }
