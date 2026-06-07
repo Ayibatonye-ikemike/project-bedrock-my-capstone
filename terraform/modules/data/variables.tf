@@ -18,6 +18,11 @@ variable "node_security_group" {
   type        = string
 }
 
+variable "node_iam_role_name" {
+  description = "EKS node IAM role name to attach the DynamoDB access policy to."
+  type        = string
+}
+
 variable "db_instance_class" {
   description = "RDS instance class."
   type        = string

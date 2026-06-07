@@ -159,6 +159,44 @@ resource "aws_dynamodb_table" "carts" {
   tags = { Name = "${var.project_name}-carts" }
 }
 
+# --- DynamoDB access for the carts service (via EKS node role) ---------------
+# The cart microservice (running on the worker nodes) needs CRUD + Query access
+# to the carts table AND its GSI. Least-privilege: scoped to this table only.
+
+resource "aws_iam_policy" "carts_dynamodb" {
+  name        = "${var.project_name}-carts-dynamodb"
+  description = "CRUD + Query access to the carts DynamoDB table and its indexes."
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:BatchGetItem",
+          "dynamodb:BatchWriteItem",
+          "dynamodb:Query",
+          "dynamodb:Scan",
+          "dynamodb:DescribeTable",
+        ]
+        Resource = [
+          aws_dynamodb_table.carts.arn,
+          "${aws_dynamodb_table.carts.arn}/index/*",
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "carts_dynamodb" {
+  role       = var.node_iam_role_name
+  policy_arn = aws_iam_policy.carts_dynamodb.arn
+}
+
 # --- Secrets Manager ---------------------------------------------------------
 
 resource "aws_secretsmanager_secret" "mysql" {

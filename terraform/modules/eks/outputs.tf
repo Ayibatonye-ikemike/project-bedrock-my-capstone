@@ -27,3 +27,8 @@ output "cluster_security_group_id" {
   description = "Cluster security group ID."
   value       = module.eks.cluster_security_group_id
 }
+
+output "node_iam_role_name" {
+  description = "IAM role name attached to the managed worker nodes."
+  value       = module.eks.eks_managed_node_groups["default"].iam_role_name
+}

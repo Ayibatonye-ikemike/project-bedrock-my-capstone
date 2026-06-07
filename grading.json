@@ -7,12 +7,12 @@
   "cluster_certificate_authority_data": {
     "sensitive": true,
     "type": "string",
-    "value": "REDACTED"
+    "value": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJRDJQd1kwODBiUTh3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TmpBMk1EY3dOakl6TWpWYUZ3MHpOakEyTURRd05qSTRNalZhTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUUM1Um14dllTUC9ZRFFhakdYOFZEZ1NtV2RtUjN6Q1lCc0ZPVStOWDhqYXo2eTZsS1VqdVlPbkUzaVcKdWIvaUplK3RuV0k3OFhrOTl6dVFwb3BxT2M2akdWcExOYUxBRkZONHI1M25vMnBDUklkWXpPSG04SFVNMHQ3egpMc0pLSkxpb3ROMEdsT1RLSXVnYVBnTmlObklHMTlPMzdmRk5lQURHOWpTYitvaFRwdkhXcDJFQWM2OWd4dDl4ClFUSUNneFRqN282OTdHb0VMbFcrelR2YmtkSHd2K1FzVW1qSUlmSFdHRmFrN3gyTmxLYmVYalJkYmx1dUN0QngKU25FbDg5MHV4S01OelVQVDc4QWZjTXJ0c2lkYnQvYU9TQjZZRk13WUVHWW9RS0lNVXNHQjBxUWtTWHlWSllTQQo1bUFyUGJmZkZDT0orMWNaT2hCa0hKR2lLL3hyQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJScXdWSXNuQ3hib1d0eU9OOFplc2xZYjF0aVF6QVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQmErT21oRndqcwplNGZIYXovSlJQOXo1bjNiSHVIMlVqNm1FZmZEcVhQUGlIU252K21GRTNpKzU1Rkd5cFQxQVM0VTJjUWE4UzQxCmw0SllGUmw0b2Z2TWZDR2xCUis2cnllT1EyUHViSkJPL2lySlFTemRyUHpBOGUzcUVPdzVhYWpHbnQvTGphQmkKVk52R3RKNWFBQnJNQ0FkUXRRdW9FT2JCS29ZVUdUbzYxLzA2YyttOUVNb0xtUW5Qd09VZWtkbk5OdU1CQ3l6WgoyaWV5V3dld0ZhZmE5SElTZEQ4Ly84bWI4YW44akd5b3l1NkRSNTBDVzEzVTJlYmZXUld0RGh1dUw5SThveUZ6CkwwbzRMdFd5WlNxMkdNNGxjcWc5Qk9iNStLcm5idTFHdU5hRE8xSG92TDZPMDhVM29Pdm9FaUhuYWZqYWgyQ04KZWFqcHl2NzNVVG1YCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
   },
   "cluster_endpoint": {
     "sensitive": false,
     "type": "string",
-    "value": "https://61C46FA12663EFC62744C055CC818293.gr7.us-east-1.eks.amazonaws.com"
+    "value": "https://65B8881E608936869FB022AB39BDD316.gr7.us-east-1.eks.amazonaws.com"
   },
   "cluster_name": {
     "sensitive": false,
@@ -22,17 +22,17 @@
   "developer_access_key_id": {
     "sensitive": true,
     "type": "string",
-    "value": "REDACTED"
+    "value": "REDACTED-see-deliverable-doc"
   },
   "developer_console_password": {
     "sensitive": true,
     "type": "string",
-    "value": "REDACTED"
+    "value": "REDACTED-see-deliverable-doc"
   },
   "developer_secret_access_key": {
     "sensitive": true,
     "type": "string",
-    "value": "REDACTED"
+    "value": "REDACTED-see-deliverable-doc"
   },
   "lambda_function_name": {
     "sensitive": false,
@@ -47,6 +47,6 @@
   "vpc_id": {
     "sensitive": false,
     "type": "string",
-    "value": "vpc-0f613d62732389435"
+    "value": "vpc-04a8d039042e09af1"
   }
 }

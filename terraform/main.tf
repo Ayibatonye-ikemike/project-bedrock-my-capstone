@@ -41,6 +41,7 @@ module "data" {
   vpc_id              = module.vpc.vpc_id
   private_subnet_ids  = module.vpc.private_subnet_ids
   node_security_group = module.eks.node_security_group_id
+  node_iam_role_name  = module.eks.node_iam_role_name
   db_instance_class   = var.db_instance_class
 }
 

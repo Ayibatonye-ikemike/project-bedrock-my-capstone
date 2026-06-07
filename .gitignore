@@ -31,3 +31,7 @@ bedrock-dev-view-credentials*.csv
 .idea/
 .vscode/
 *.swp
+
+# Saved Terraform plan files (binary, transient)
+tfplan
+*.tfplan

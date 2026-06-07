@@ -12,7 +12,7 @@ metadata:
     # TLS terminated at the ALB via an ACM-managed certificate (bonus 5.2).
     # HTTP:80 is kept only to issue a 443 redirect; all traffic upgrades to HTTPS.
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:663958378887:certificate/163eea77-78ca-4cdd-901d-41a4d66e5607
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:663958378887:certificate/b4cc4a56-fb11-4ccc-9459-9d801fdefafe
     alb.ingress.kubernetes.io/ssl-redirect: '443'
 spec:
   ingressClassName: alb
