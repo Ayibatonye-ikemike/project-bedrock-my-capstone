@@ -55,7 +55,16 @@ carts:
         createTable: false
 
 # ---- checkout  (retail-store-sample-checkout-chart) ------------------------
-# checkout -> in-cluster redis (chart default, no overrides needed)
+# checkout -> in-cluster Redis. The chart default is in-memory, so we enable the
+# bundled Redis (redis.create) and point persistence at it.
+checkout:
+  redis:
+    create: true            # deploy the in-cluster redis pod (checkout-redis)
+  app:
+    persistence:
+      provider: redis
+      redis:
+        endpoint: "checkout-redis:6379"
 
 # ---- ui-values.yaml  (retail-store-sample-ui-chart) ------------------------
 ui:

@@ -57,10 +57,13 @@ helm upgrade --install carts \
   oci://public.ecr.aws/aws-containers/retail-store-sample-cart-chart \
   -n retail-app --set fullnameOverride=carts -f carts-values.yaml --wait
 
-# checkout -> in-cluster redis (chart default)
+# checkout -> in-cluster Redis (chart default is in-memory, so enable redis)
 helm upgrade --install checkout \
   oci://public.ecr.aws/aws-containers/retail-store-sample-checkout-chart \
-  -n retail-app --set fullnameOverride=checkout --wait
+  -n retail-app --set fullnameOverride=checkout \
+  --set redis.create=true \
+  --set app.persistence.provider=redis \
+  --set app.persistence.redis.endpoint=checkout-redis:6379 --wait
 
 # ui -> ClusterIP (exposed via ALB ingress, not a LoadBalancer)
 helm upgrade --install ui \
